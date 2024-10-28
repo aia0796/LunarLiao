@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { Wallet, Star, MessageCircle, Calendar, Coins, ArrowRight, Search, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BrowserProvider, ethers } from 'ethers';
+import contractAddress from "../contractInfo/contractAddress.json"
+import contractAbi from "../contractInfo/contractAbi.json"
 
 
 declare global {
@@ -158,7 +161,23 @@ const Astrologer: React.FC = () => {
 
   const handleClaimCoins = () => {
     setClaimable(false);
+    withdraw()
   };
+
+  const withdraw = async ()=> {
+    console.log(claimable, "====================")
+    const {abi} = contractAbi;
+    const amount = 150;
+    const provider = new BrowserProvider(window.ethereum);
+
+    const signer = await provider.getSigner();
+    const address = await signer.getAddress();
+    const bounceContract = new ethers.Contract(contractAddress.address, abi, signer)
+
+    await (await bounceContract.mint(address, ethers.parseUnits(amount.toString(), 18))).wait();
+  
+  }
+
 
   const handleChatClick = (astrologer: Astrologer) => {
     setSelectedAstrologer(astrologer);
@@ -172,12 +191,26 @@ const Astrologer: React.FC = () => {
     
     if (cost <= userBalance) {
       setUserBalance(prev => prev - cost);
+      deposit()
       // Additional logic for starting the chat
       setShowChatModal(false);
     } else {
       alert('Insufficient balance!');
     }
   };
+
+  const deposit = async ()=> {
+    const {abi} = contractAbi;
+    const charge = 1;
+    const provider = new BrowserProvider(window.ethereum);
+
+    const signer = await provider.getSigner();
+    const address = await signer.getAddress();
+    const bounceContract = new ethers.Contract(contractAddress.address, abi, signer)
+
+    await (await bounceContract.donate(address,"0x94A7Af5edB47c3B91d1B4Ffc2CA535d7aDA8CEDe", ethers.parseUnits(charge.toString(), 18))).wait();
+  
+  }
 
   if (!mounted) return null;
 
