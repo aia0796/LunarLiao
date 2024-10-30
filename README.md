@@ -2,6 +2,20 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 # LunarLiao Build on AIA CHAIN
 
+**Lunar Liao** : 
+
+Lunar Liao is a decentralized astrology platform that provides users with personalized daily readings and Kundli analysis. It fosters anonymous discussions with professional astrologers, creating a safe space for exploration and learning. Key features include:
+
+Personalized Tokens: Users receive tokens that enhance their experience and interaction on the platform.
+
+Daily Claim Tokens: Users can claim tokens daily, encouraging regular engagement and participation.
+
+Anonymous Interactions: The platform allows users to communicate with astrologers and others without revealing their identity.
+
+Smart Contracts: Secure and transparent transactions ensure trust and integrity within the platform.
+
+
+
 ## Getting Started
 
 ## Add LL contract address to wallet
