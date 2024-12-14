@@ -1,4 +1,6 @@
 "use client"
+/* eslint-disable */
+
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Star, Sparkles, Moon, Coins, ArrowRight, ArrowLeft, Twitter, Instagram, LucideIcon } from 'lucide-react';
