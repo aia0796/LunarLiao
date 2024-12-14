@@ -60,7 +60,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-50 flex items-center justify-center p-4"
       >
-        <div 
+        <div
           className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           onClick={onClose}
         />
@@ -149,7 +149,7 @@ const Astrologer: React.FC = () => {
 
   useEffect(() => {
     setMounted(true);
-    
+
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
         x: (e.clientX / window.innerWidth) * 100,
@@ -166,18 +166,21 @@ const Astrologer: React.FC = () => {
     withdraw()
   };
 
-  const withdraw = async ()=> {
+  const withdraw = async () => {
     console.log(claimable, "====================")
-    const {abi} = contractAbi;
+    const { abi } = contractAbi;
     const amount = 150;
-    const provider = new BrowserProvider(window.ethereum);
+    if (window.ethereum !== undefined) {
 
-    const signer = await provider.getSigner();
-    const address = await signer.getAddress();
-    const bounceContract = new ethers.Contract(contractAddress.address, abi, signer)
+      const provider = new BrowserProvider(window.ethereum);
 
-    await (await bounceContract.mint(address, ethers.parseUnits(amount.toString(), 18))).wait();
-  
+      const signer = await provider.getSigner();
+      const address = await signer.getAddress();
+      const bounceContract = new ethers.Contract(contractAddress.address, abi, signer)
+
+      await (await bounceContract.mint(address, ethers.parseUnits(amount.toString(), 18))).wait();
+    }
+
   }
 
 
@@ -190,7 +193,7 @@ const Astrologer: React.FC = () => {
     // Add logic to handle chat confirmation and LL coin deduction
     const costStr = selectedAstrologer?.price.split(' ')[0];
     const cost = costStr ? parseInt(costStr) : 0;
-    
+
     if (cost <= userBalance) {
       setUserBalance(prev => prev - cost);
       deposit()
@@ -201,17 +204,24 @@ const Astrologer: React.FC = () => {
     }
   };
 
-  const deposit = async ()=> {
-    const {abi} = contractAbi;
+  const deposit = async () => {
+    const { abi } = contractAbi;
     const charge = 1;
-    const provider = new BrowserProvider(window.ethereum);
+    if (!window.ethereum) {
+      console.log("no wallet");
 
-    const signer = await provider.getSigner();
-    const address = await signer.getAddress();
-    const bounceContract = new ethers.Contract(contractAddress.address, abi, signer)
+    } else {
 
-    await (await bounceContract.donate(address,"0x94A7Af5edB47c3B91d1B4Ffc2CA535d7aDA8CEDe", ethers.parseUnits(charge.toString(), 18))).wait();
-  
+
+      const provider = new BrowserProvider(window.ethereum);
+
+      const signer = await provider.getSigner();
+      const address = await signer.getAddress();
+      const bounceContract = new ethers.Contract(contractAddress.address, abi, signer)
+
+      await (await bounceContract.donate(address, "0x94A7Af5edB47c3B91d1B4Ffc2CA535d7aDA8CEDe", ethers.parseUnits(charge.toString(), 18))).wait();
+    }
+
   }
 
   if (!mounted) return null;
@@ -247,7 +257,7 @@ const Astrologer: React.FC = () => {
       </div>
 
       {/* Navbar */}
-      <motion.nav 
+      <motion.nav
         className="fixed top-0 left-0 right-0 z-40 backdrop-blur-sm border-b border-white/10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -259,19 +269,19 @@ const Astrologer: React.FC = () => {
               Lunar Liáo
             </a>
             {!walletConnected ? (
-            <motion.button
-              className="px-6 py-2.5 bg-purple-500 hover:bg-purple-600 rounded-full text-white font-semibold text-sm shadow-lg shadow-purple-500/25 flex items-center gap-2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={connectWallet}
-            >
-              <Wallet className="w-4 h-4" />
-              Connect Wallet
-            </motion.button>
+              <motion.button
+                className="px-6 py-2.5 bg-purple-500 hover:bg-purple-600 rounded-full text-white font-semibold text-sm shadow-lg shadow-purple-500/25 flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={connectWallet}
+              >
+                <Wallet className="w-4 h-4" />
+                Connect Wallet
+              </motion.button>
             ) : (
               <div className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full text-sm font-medium hover:shadow-lg transition-shadow duration-300">
-              <span className="text-white text-xs">{walletAddress.slice(0, 5) + '...' + walletAddress.slice(-4)}</span>
-            </div>
+                <span className="text-white text-xs">{walletAddress.slice(0, 5) + '...' + walletAddress.slice(-4)}</span>
+              </div>
             )}
           </div>
         </div>
@@ -309,9 +319,8 @@ const Astrologer: React.FC = () => {
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <h3 className="font-semibold">{astrologer.name}</h3>
-                        <span className={`px-2 py-0.5 rounded-full text-xs ${
-                          astrologer.status === 'online' ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
-                        }`}>
+                        <span className={`px-2 py-0.5 rounded-full text-xs ${astrologer.status === 'online' ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
+                          }`}>
                           {astrologer.status}
                         </span>
                       </div>
@@ -457,7 +466,7 @@ const Astrologer: React.FC = () => {
               <X className="w-5 h-5" />
             </button>
           </div>
-          
+
           {selectedAstrologer && (
             <div className="space-y-4">
               <div className="flex items-center gap-4">
@@ -471,7 +480,7 @@ const Astrologer: React.FC = () => {
                   <p className="text-sm text-white/60">{selectedAstrologer.speciality}</p>
                 </div>
               </div>
-              
+
               <div className="bg-white/5 p-4 rounded-lg">
                 <div className="flex justify-between items-center">
                   <span className="text-white/60">Session Cost</span>
