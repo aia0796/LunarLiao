@@ -20,9 +20,9 @@ Smart Contracts: Secure and transparent transactions ensure trust and integrity 
 
 ## Add LL contract address to wallet
 
-Contract address : 0x5a12A1aB34c55F90AC8C0b50e249dE3117c0F598
+Contract address : 0x2c326facc414d38c756db0674f0919768712edd6
 
-[Verify LL on testnet](https://testnet.aiascan.com/token/0x5a12A1aB34c55F90AC8C0b50e249dE3117c0F598)
+[Verify LL on testnet](https://testnet.bscscan.com/token/0xabf9f00beeb5ee7edc10f5a698f84ae380ceb51f)
 
 
 First, run the development server:
